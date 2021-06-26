@@ -11,3 +11,5 @@ app.use('/api/png',pngFormat)
 app.listen(port, () => {
     console.log(`server starts at http://localhost:${port}`)
 })
+
+export default app

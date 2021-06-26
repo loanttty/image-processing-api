@@ -10,7 +10,7 @@ jpgFormat.get('/', (req, res) => {
     const titleTS = title as string
     const widthTS = parseInt(width as string)
     const heightTS = parseInt(height as string)
-    const resizedImgPath = path.join(__dirname,`/thumb/${title}${widthTS}x${heightTS}.jpg`)
+    const resizedImgPath = path.join(__dirname,`/thumb/${titleTS}${widthTS}x${heightTS}.jpg`)
 
     try {
         if(fs.existsSync(resizedImgPath)) {
