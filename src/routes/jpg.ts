@@ -18,7 +18,7 @@ jpgFormat.get('/', (req, res) => {
             res.sendFile(resizedImgPath)
         } else {
             console.log('resizing jpg')
-            sharp(path.resolve(`./asset/${titleTS}`))
+            sharp(path.resolve(`./asset/${titleTS}.jpg`))
                 .resize(widthTS,heightTS)
                 .toFile(resizedImgPath)
                 .then(() => {
@@ -26,7 +26,7 @@ jpgFormat.get('/', (req, res) => {
                     res.sendFile(resizedImgPath)
                 })
                 .catch(err => {
-                    res.send(`jpg Error in processing: ${err}`)
+                    res.send(` Error in transforming image to jpg: ${err}`)
                 })
         }
     } catch(err) {
