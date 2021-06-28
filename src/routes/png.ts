@@ -1,37 +1,28 @@
 import express from 'express'
 import fs from 'fs'
-import sharp from 'sharp'
+import resizeImg from '../util/resizeImg'
 import path from 'path'
 
 const pngFormat = express.Router()
 
-pngFormat.get('/', (req, res) => {
+pngFormat.get('/', async (req, res) => {
     const {title,width,height} = req.query
     const titleTS = title as string
     const widthTS = parseInt(width as string)
     const heightTS = parseInt(height as string)
-    const resizedImgPath = path.join(__dirname,`/thumb/${titleTS}${widthTS}x${heightTS}.png`)
-
+    const resizedImgPath = path.resolve(`./thumb/${titleTS}${widthTS}x${heightTS}.png`)
+    
     try {
         if(fs.existsSync(resizedImgPath)) {
             console.log('from disk png')
             res.sendFile(resizedImgPath)
         } else {
-            console.log(path.resolve(`./asset/${titleTS}.jpg`))
             console.log('resizing png')
-            sharp(path.resolve(`./asset/${titleTS}.jpg`))
-                .resize(widthTS,heightTS)
-                .toFile(resizedImgPath)
-                .then(() => {
-                    console.log('from sharp png')
-                    res.sendFile(resizedImgPath)
-                })
-                .catch(err => {
-                    res.send(`Error in processing: ${err}`)
-                })
+            await resizeImg(titleTS,widthTS,heightTS,'png')
+            res.sendFile(resizedImgPath)
         }
     } catch(err) {
-        console.log('Error in processing: ',err)
+        res.status(404).send(`Error in png processing: ${err}`)
     }
 
 })
