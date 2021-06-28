@@ -14,11 +14,10 @@ jpgFormat.get('/', async (req, res) => {
     const resizedImgPath = path.resolve(`./thumb/${titleTS}${widthTS}x${heightTS}.jpg`)
     
     try {
+        // check if image with same resizing request exists, else use sharp to create new one
         if(fs.existsSync(resizedImgPath)) {
-            console.log('from disk jpg')
             res.sendFile(resizedImgPath)
         } else {
-            console.log('resizing jpg')
             await resizeImg(titleTS,widthTS,heightTS,'jpg')
             res.sendFile(resizedImgPath)
         }
